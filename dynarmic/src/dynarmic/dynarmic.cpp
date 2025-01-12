@@ -486,6 +486,7 @@ FQL int dynarmic_mmap(dynarmic* dynarmic, u64 address, u64 size, int perms) {
         }
 
         void *addr = mmap(NULL, DYN_PAGE_SIZE, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+        // 因为MAP_ANONYMOUS导致分配的内存全0，这导致了模拟的整个栈空间为0，某些厂商有意利用了这个检测
         if(addr == MAP_FAILED) {
             fprintf(stderr, "mmap failed[%s->%s:%d]: addr=%p\n", __FILE__, __func__, __LINE__, (void*)addr);
             return 5;
